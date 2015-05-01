@@ -7,5 +7,6 @@
 /target/
 .project
 .settings
+#idea intellij
 *.iml
 .idea/*
