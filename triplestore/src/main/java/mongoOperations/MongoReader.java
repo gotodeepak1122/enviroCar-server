@@ -9,6 +9,7 @@ import org.envirocar.server.core.entities.Sensor;
 import org.envirocar.server.core.entities.Track;
 import org.envirocar.server.core.exception.GeometryConverterException;
 import org.envirocar.server.mongo.entity.MongoMeasurement;
+import org.envirocar.server.mongo.entity.MongoSensor;
 import org.envirocar.server.mongo.entity.MongoUser;
 import org.envirocar.server.mongo.util.GeoBSON;
 import org.joda.time.DateTime;
@@ -31,7 +32,7 @@ import java.util.List;
 /**
  * An entity that reads a collections store it in a measurement implementation POJO
  */
-public class AbstractMongoReader {
+public class MongoReader {
 
 
     private static MongoClient mongoClient;
@@ -44,14 +45,14 @@ public class AbstractMongoReader {
      * @throws UnknownHostException
      */
 
-    public AbstractMongoReader() throws UnknownHostException {
+    public MongoReader() throws UnknownHostException {
         mongoClient = new MongoClient();
         DB db = mongoClient.getDB("enviroCar");
         collection = db.getCollection("measurements");
     }
 
     public static void main(String[] args) throws UnknownHostException, GeometryConverterException {
-        List<MongoMeasurement> mongoMeasurementList = new AbstractMongoReader().getAllMeasurements();
+        List<MongoMeasurement> mongoMeasurementList = new MongoReader().getAllMeasurements();
         for (MongoMeasurement mongoMeasurement : mongoMeasurementList) {
             System.out.println(mongoMeasurement.toString());
         }
@@ -88,6 +89,11 @@ public class AbstractMongoReader {
         System.out.println(mongoUser.toString());
         return mongoUser;
     }
+
+    public MongoSensor getSensorFromDBObject(DBObject dbObject) {
+        return null;
+    }
+
 
     public MongoMeasurement getMeasurementFromDbObject(DBObject dbObject) throws GeometryConverterException {
 
