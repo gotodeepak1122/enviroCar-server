@@ -2,7 +2,10 @@ package mongoOperations;
 
 import org.envirocar.server.core.entities.User;
 import org.envirocar.server.mongo.entity.MongoMeasurement;
+import org.envirocar.server.mongo.entity.MongoMeasurementValue;
 import org.envirocar.server.mongo.entity.MongoUser;
+
+import java.util.Set;
 
 /**
  * @author deepaknair on 16/06/15 AD.
@@ -10,6 +13,7 @@ import org.envirocar.server.mongo.entity.MongoUser;
 public class StoreMeasurement extends MongoMeasurement {
     private MongoUser storeUser;
     private StoreTrack storeTrack;
+    private Set<MongoMeasurementValue> storeMeasurementValues;
 
     public MongoUser getStoreUser() {
         return storeUser;
@@ -25,5 +29,13 @@ public class StoreMeasurement extends MongoMeasurement {
 
     public void setStoreTrack(StoreTrack storeTrack) {
         this.storeTrack = storeTrack;
+    }
+
+    public Set<MongoMeasurementValue> getStoreMeasurementValues() {
+        return storeMeasurementValues;
+    }
+
+    public void setStoreMeasurementValues(Set<MongoMeasurementValue> storeMeasurementValues) {
+        this.storeMeasurementValues = storeMeasurementValues;
     }
 }
