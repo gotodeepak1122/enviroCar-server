@@ -9,6 +9,7 @@ import org.envirocar.server.mongo.entity.MongoUser;
  */
 public class StoreMeasurement extends MongoMeasurement {
     private MongoUser storeUser;
+    private StoreTrack storeTrack;
 
     public MongoUser getStoreUser() {
         return storeUser;
@@ -18,5 +19,11 @@ public class StoreMeasurement extends MongoMeasurement {
         this.storeUser = (MongoUser) user;
     }
 
+    public StoreTrack getStoreTrack() {
+        return storeTrack;
+    }
 
+    public void setStoreTrack(StoreTrack storeTrack) {
+        this.storeTrack = storeTrack;
+    }
 }
