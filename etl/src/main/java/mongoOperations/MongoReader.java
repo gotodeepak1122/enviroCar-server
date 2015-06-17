@@ -3,11 +3,10 @@ package mongoOperations;
 import com.mongodb.*;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import entity.StoreMeasurement;
+import dataSetDump.POJOEntities.*;
 import org.bson.BSONObject;
-import org.bson.types.ObjectId;
 import org.envirocar.server.core.exception.GeometryConverterException;
-import org.envirocar.server.mongo.entity.*;
+import org.envirocar.server.mongo.entity.MongoMeasurementValue;
 import org.envirocar.server.mongo.util.GeoBSON;
 import org.joda.time.DateTime;
 
@@ -56,10 +55,10 @@ public class MongoReader {
         return dbObjectList;
     }
 
-    public List<MongoMeasurement> getAllMeasurements() throws GeometryConverterException {
+    public List<MeasurementPOJO> getAllMeasurements() throws GeometryConverterException {
         collection = db.getCollection("measurements");
         DBCursor dbCursor = collection.find();
-        List<MongoMeasurement> measurementList = new ArrayList<MongoMeasurement>();
+        List<MeasurementPOJO> measurementList = new ArrayList<MeasurementPOJO>();
         while (dbCursor.hasNext()) {
             DBObject dbObject = dbCursor.next();
             measurementList.add(getMeasurementFromDbObject(dbObject));
@@ -67,9 +66,9 @@ public class MongoReader {
         return measurementList;
     }
 
-    public List<StoreTrack> getAllTracks() {
+    public List<TrackPOJO> getAllTracks() {
         collection = db.getCollection("tracks");
-        List<StoreTrack> storeTrackList = new ArrayList<StoreTrack>();
+        List<TrackPOJO> storeTrackList = new ArrayList<TrackPOJO>();
         DBCursor dbCursor = collection.find();
         while (dbCursor.hasNext()) {
             DBObject dbObject = dbCursor.next();
@@ -78,21 +77,21 @@ public class MongoReader {
         return storeTrackList;
     }
 
-    public List<MongoSensor> getAllSensors() {
+    public List<SensorPOJO> getAllSensors() {
         collection = db.getCollection("sensors");
-        List<MongoSensor> mongoSensorArrayList = new ArrayList<MongoSensor>();
+        List<SensorPOJO> sensorPOJOs = new ArrayList<SensorPOJO>();
         DBCursor dbCursor = collection.find();
         while (dbCursor.hasNext()) {
             DBObject dbObject = dbCursor.next();
-            mongoSensorArrayList.add(getSensorFromDBObject(dbObject));
+            sensorPOJOs.add(getSensorFromDBObject(dbObject));
         }
-        return mongoSensorArrayList;
+        return sensorPOJOs;
     }
 
 
-    public List<MongoUser> getAllUsers() {
+    public List<UserPOJO> getAllUsers() {
         collection = db.getCollection("users");
-        List<MongoUser> UserList = new ArrayList<MongoUser>();
+        List<UserPOJO> UserList = new ArrayList<UserPOJO>();
         DBCursor dbCursor = collection.find();
         while (dbCursor.hasNext()) {
             DBObject dbObject = dbCursor.next();
@@ -102,95 +101,93 @@ public class MongoReader {
     }
 
 
-
-    public MongoUser getUserFromDbObject(DBObject dbObject) {
-        MongoUser mongoUser = new MongoUser();
-        mongoUser.setToken((String) dbObject.get("token"));
-        mongoUser.setAdmin((Boolean) dbObject.get("isAdmin"));
-        mongoUser.setName((String) dbObject.get("_id"));
-        mongoUser.setName((String) dbObject.get("mail"));
-        return mongoUser;
+    public UserPOJO getUserFromDbObject(DBObject dbObject) {
+        UserPOJO userPOJO = new UserPOJO();
+        userPOJO.setToken((String) dbObject.get("token"));
+        userPOJO.setAdmin((Boolean) dbObject.get("isAdmin"));
+        userPOJO.setName((String) dbObject.get("_id"));
+        userPOJO.setMail((String) dbObject.get("mail"));
+        return userPOJO;
     }
 
-    public MongoSensor getSensorFromDBObject(DBObject dbObject) {
+    public SensorPOJO getSensorFromDBObject(DBObject dbObject) {
 
 
-        MongoSensor mongoSensor = new MongoSensor();
-        mongoSensor.setId((ObjectId) dbObject.get("_id"));
-        mongoSensor.setType((String) dbObject.get("type"));
+        SensorPOJO sensorPOJO = new SensorPOJO();
+        sensorPOJO.setIdentifier((String) dbObject.get("_id"));
+        sensorPOJO.setType((String) dbObject.get("type"));
 
         BasicDBObject propertiesObject = (BasicDBObject) dbObject.get("properties");
 
         HashMap<String, Object> propertiesMap = new HashMap<String, Object>(propertiesObject.toMap());
         for (String key : propertiesMap.keySet()) {
-            mongoSensor.addProperty(key, propertiesMap.get(key));
+            sensorPOJO.addProperty(key, propertiesMap.get(key));
         }
-        return mongoSensor;
+        return sensorPOJO;
     }
 
-    public StoreTrack getTrackFromDBObject(DBObject dbObject) {
+
+    public TrackPOJO getTrackFromDBObject(DBObject dbObject) {
 
         // _id,DBREF user, sensor,name,description,begin , end , obddevice , length ,
-        StoreTrack storeTrack = new StoreTrack();
-        storeTrack.setId((ObjectId) dbObject.get("_id"));
+        TrackPOJO storeTrack = new TrackPOJO();
+        storeTrack.setIdentifier((String) dbObject.get("_id"));
         storeTrack.setName((String) dbObject.get("name"));
         storeTrack.setLength((Double) dbObject.get("length"));
         storeTrack.setObdDevice((String) dbObject.get("obdDevice"));
         DBRef dbRef = (DBRef) dbObject.get("user");
-        storeTrack.setStoreUser((getUserFromDbObject(dbRef.fetch())));
+        storeTrack.setUser((getUserFromDbObject(dbRef.fetch())));
         storeTrack.setSensor(getSensorFromDBObject((DBObject) dbObject.get("sensor")));
         storeTrack.setDescription((String) dbObject.get("description"));
         return storeTrack;
     }
 
-    public MongoMeasurementValue getMeasurementValueFromDBObject(BasicDBObject basicDBObject) {
-        int count = 0;
-        System.out.println("inside function");
-        MongoMeasurementValue mongoMeasurementValue = new MongoMeasurementValue();
+
+    public MeasurementValuePOJO getMeasurementValueFromDBObject(BasicDBObject basicDBObject) {
+
+        MeasurementValuePOJO measurementValuePOJO = new MeasurementValuePOJO();
         Map<String, Object> hashMap = basicDBObject.toMap();
-        mongoMeasurementValue.setValue(hashMap.get("value"));
-        mongoMeasurementValue.setPhenomenon(getPhenomenonFromDBObject((BasicDBObject) hashMap.get("phen")));
-        System.out.println(mongoMeasurementValue.getPhenomenon().getUnit());
-        System.out.println("outside function");
-        return mongoMeasurementValue;
-
+        measurementValuePOJO.setValue(hashMap.get("value"));
+        measurementValuePOJO.setPhenomenon(getPhenomenonFromDBObject((BasicDBObject) hashMap.get("phen")));
+        System.out.println(measurementValuePOJO.getPhenomenon().getUnit());
+        return measurementValuePOJO;
 
     }
 
-    public MongoPhenomenon getPhenomenonFromDBObject(BasicDBObject basicDBObject) {
-        MongoPhenomenon mongoPhenomenon = new MongoPhenomenon();
-        mongoPhenomenon.setName((String) basicDBObject.toMap().get("_id"));
-        mongoPhenomenon.setUnit((String) basicDBObject.toMap().get("unit"));
-        return mongoPhenomenon;
+
+    public PhenomenonPOJO getPhenomenonFromDBObject(BasicDBObject basicDBObject) {
+        PhenomenonPOJO phenomenonPOJO = new PhenomenonPOJO();
+        phenomenonPOJO.setName((String) basicDBObject.toMap().get("_id"));
+        phenomenonPOJO.setUnit((String) basicDBObject.toMap().get("unit"));
+        return phenomenonPOJO;
     }
 
 
-    public MongoMeasurement getMeasurementFromDbObject(DBObject dbObject) throws GeometryConverterException {
+    public MeasurementPOJO getMeasurementFromDbObject(DBObject dbObject) throws GeometryConverterException {
 
-        StoreMeasurement storeMeasurement = new StoreMeasurement();
+        MeasurementPOJO measurementPOJO = new MeasurementPOJO();
         DBRef userRefObject = (DBRef) dbObject.get("user");
         DBRef trackRefObject = (DBRef) dbObject.get("track");
         DBObject trackDBObject = trackRefObject.fetch();
-        MongoUser mongoUser = getUserFromDbObject(userRefObject.fetch());
+        UserPOJO userPOJO = getUserFromDbObject(userRefObject.fetch());
         Geometry geometry = new GeoBSON(new GeometryFactory()).decode((BSONObject) dbObject.get("geometry"));
-        StoreTrack storeTrack = getTrackFromDBObject(trackDBObject);
+        TrackPOJO trackPOJO = getTrackFromDBObject(trackDBObject);
         System.out.println(trackDBObject + "\n");
-        MongoSensor sensor = getSensorFromDBObject((DBObject) dbObject.get("sensor"));
-        storeMeasurement.setId((ObjectId) dbObject.get("_id"));
+        SensorPOJO sensor = getSensorFromDBObject((DBObject) dbObject.get("sensor"));
+        measurementPOJO.setIdentifier((String) dbObject.get("_id"));
         BasicDBList basicDBList = (BasicDBList) dbObject.get("phenomenons");
         MongoMeasurementValue mongoMeasurementValue = new MongoMeasurementValue();
-        Set<MongoMeasurementValue> measurementValues = new HashSet<MongoMeasurementValue>();
+        Set<MeasurementValuePOJO> measurementValues = new HashSet<MeasurementValuePOJO>();
         for (Object object : basicDBList) {
-            measurementValues.add(getMeasurementValueFromDBObject((BasicDBObject) object));
+            measurementPOJO.addValue(getMeasurementValueFromDBObject((BasicDBObject) object));
 
         }
         Date date = (Date) dbObject.get("time");
-        storeMeasurement.setTime(new DateTime(date));
-        storeMeasurement.setGeometry(geometry);
-        storeMeasurement.setSensor(sensor);
-        storeMeasurement.setStoreTrack(storeTrack);
-        storeMeasurement.setStoreMeasurementValues(measurementValues);
-        return storeMeasurement;
+        measurementPOJO.setTime(new DateTime(date));
+        measurementPOJO.setGeometry(geometry);
+        measurementPOJO.setSensor(sensor);
+        measurementPOJO.setTrack(trackPOJO);
+        return measurementPOJO;
     }
 
 

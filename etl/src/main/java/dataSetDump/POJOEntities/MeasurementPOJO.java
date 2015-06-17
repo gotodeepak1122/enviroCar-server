@@ -19,12 +19,12 @@ public class MeasurementPOJO implements Measurement {
     private Geometry geometry;
     private String identifier;
     private DateTime time;
-    private MeasurementValue measurementValues;
+    private MeasurementValuePOJO measurementValues;
     private UserPOJO user;
     private SensorPOJO sensor;
     private TrackPOJO track;
     private DateTime creationTime;
-    private Set<MeasurementValuePOJO values = Sets.newHashSet();
+    private Set<MeasurementValuePOJO> values = Sets.newHashSet();
     private DateTime modificationTime;
 
 
@@ -84,29 +84,29 @@ public class MeasurementPOJO implements Measurement {
 
     @Override
     public MeasurementValues getValues() {
-        return null;
+        return MeasurementValues.from(this.values).build();
     }
 
     @Override
     public void addValue(MeasurementValue value) {
-        this.values.ad
+        this.values.add((MeasurementValuePOJO) value);
 
     }
 
     @Override
     public void removeValue(MeasurementValue value) {
-
+        this.values.remove(value);
     }
 
 
     @Override
     public User getUser() {
-        return user;
+        return this.user;
     }
 
     @Override
     public void setUser(User user) {
-        this.user = user;
+        this.user = (UserPOJO) user;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class MeasurementPOJO implements Measurement {
 
     @Override
     public void setSensor(Sensor sensor) {
-        this.sensor = sensor;
+        this.sensor = (SensorPOJO) sensor;
     }
 
     @Override
@@ -142,7 +142,7 @@ public class MeasurementPOJO implements Measurement {
 
     @Override
     public void setTrack(Track track) {
-        this.track = track;
+        this.track = (TrackPOJO) track;
     }
 
     @Override
