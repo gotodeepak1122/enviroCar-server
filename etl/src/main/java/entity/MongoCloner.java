@@ -1,12 +1,9 @@
 package entity;
 
 import constants.ExecutionStatus;
-import dataSetDump.POJODatasetDump;
 import mongoOperations.MongoReader;
-import org.envirocar.server.mongo.entity.MongoEntityBase;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,13 +17,8 @@ public class MongoCloner implements DBCloner {
 
     private Set<String> supportedCollections;
     private MongoReader mongoReader;
-    private POJODatasetDump pojoDatasetDump;
     private Date LastExecutionTime;
     private ExecutionStatus executionStatus;
-
-    public List<MongoEntityBase> getDataDump() {
-        return null;
-    }
 
 
     @Override
