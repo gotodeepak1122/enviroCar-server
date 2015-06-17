@@ -3,6 +3,7 @@ package mongoOperations;
 import com.mongodb.*;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import entity.StoreMeasurement;
 import org.bson.BSONObject;
 import org.bson.types.ObjectId;
 import org.envirocar.server.core.exception.GeometryConverterException;
@@ -13,21 +14,18 @@ import org.joda.time.DateTime;
 import java.net.UnknownHostException;
 import java.util.*;
 
-/**
- * @author deepaknair on 14/06/15 AD.
- */
 
-  /*TODO
-   * rewrite code with morphia and guice frameWork  -- find out appropriate measurement filter to use Morphia.get()
-   *  Reuse String Db names
-   *  TODO
-   *  use Constants for db name
+/**
+ *   @author deepaknair on 14/06/15 AD.
+ *   Mongo Utilities and processes that help the extractor
+ *   TODO
+ *   rewrite code with morphia and guice frameWork  -- find out appropriate measurement filter to use Morphia.get()
+ *   Reuse String Db names
+ *   TODO
+ *   use Constants for db name
    */
 
 
-/**
- * An entity that reads a collections store it in a measurement implementation POJO
- */
 public class MongoReader {
 
 
@@ -59,7 +57,7 @@ public class MongoReader {
     }
 
     public List<MongoMeasurement> getAllMeasurements() throws GeometryConverterException {
-        collection = db.getCollection("measuremnts");
+        collection = db.getCollection("measurements");
         DBCursor dbCursor = collection.find();
         List<MongoMeasurement> measurementList = new ArrayList<MongoMeasurement>();
         while (dbCursor.hasNext()) {

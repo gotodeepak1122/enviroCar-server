@@ -1,5 +1,6 @@
-package mongoOperations;
+package entity;
 
+import mongoOperations.StoreTrack;
 import org.envirocar.server.core.entities.User;
 import org.envirocar.server.mongo.entity.MongoMeasurement;
 import org.envirocar.server.mongo.entity.MongoMeasurementValue;
