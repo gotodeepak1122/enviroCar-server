@@ -39,7 +39,7 @@
         <module>mongo</module>
         <module>rest</module>
         <module>webapp</module>
-        <module>triplestore</module>
+        <module>etl</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
