@@ -3,6 +3,7 @@ package dataSetDump.POJOEntities;
 import org.envirocar.server.core.entities.Sensor;
 import org.joda.time.DateTime;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Map;
 public class SensorPOJO implements Sensor {
 
     private String type;
-    private Map<String, Object> properties;
+    private Map<String, Object> properties = new HashMap<String, Object>();
     private String identifier;
     private DateTime creationTime;
     private DateTime modificationTime;

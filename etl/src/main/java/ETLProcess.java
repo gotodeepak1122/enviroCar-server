@@ -1,6 +1,6 @@
 import dataSetDump.DatasetDump;
 import entity.Cloner;
-import loader.DataLoader;
+import loader.FusekiLoader;
 
 /**
  * @author deepaknair on 17/06/15 AD.
@@ -15,11 +15,11 @@ public interface ETLProcess {
 
     // Transform
 
-    public DatasetDump getdatasetdump();
+    public DatasetDump getDataSetDump();
 
     // Load
 
-    public DataLoader getDumpWiter();
+    public FusekiLoader getDumpWriter();
 
 
 }

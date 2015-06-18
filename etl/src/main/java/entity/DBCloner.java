@@ -14,7 +14,5 @@ public interface DBCloner extends Cloner {
 
     public Date getLastExecutionTime();
 
-    public void runCloner();
-
     public ExecutionStatus getExecutionStatus();
 }
