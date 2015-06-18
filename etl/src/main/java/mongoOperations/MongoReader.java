@@ -92,7 +92,7 @@ public class MongoReader {
 
 
     public List<PhenomenonPOJO> getAllPhenomenon() {
-        collection = db.getCollection("phenomenon");
+        collection = db.getCollection("phenomenons");
         List<PhenomenonPOJO> phenomenonPOJOs = new ArrayList<PhenomenonPOJO>();
         DBCursor dbCursor = collection.find();
         while (dbCursor.hasNext()) {
@@ -178,8 +178,7 @@ public class MongoReader {
 
     private PhenomenonPOJO getPhenomenonFromDBObject(DBObject dBObject) {
         PhenomenonPOJO phenomenonPOJO = new PhenomenonPOJO();
-        ObjectId objectId = (ObjectId) dBObject.get("_id");
-        phenomenonPOJO.setName(objectId.toString());
+        phenomenonPOJO.setName((String) dBObject.get("_id"));
         phenomenonPOJO.setUnit((String) dBObject.get("unit"));
         return phenomenonPOJO;
     }

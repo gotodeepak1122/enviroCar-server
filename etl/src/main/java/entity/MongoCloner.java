@@ -2,13 +2,11 @@ package entity;
 
 import constants.ExecutionStatus;
 import dataSetDump.POJODatasetDump;
-import dataSetDump.POJOEntities.MeasurementPOJO;
 import mongoOperations.MongoReader;
 import org.envirocar.server.core.exception.GeometryConverterException;
 
 import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,23 +36,20 @@ public class MongoCloner implements DBCloner {
     }
 
 
-    public POJODatasetDump cloneIntoMemory() throws GeometryConverterException {
+    public POJODatasetDump cloneIntoMemory() throws GeometryConverterException, UnknownHostException {
 
         /**
          * Dump is being populated
          */
+        MongoCloner testcloner = new MongoCloner();
         POJODatasetDump pojoDatasetDump = new POJODatasetDump();
-        this.setExecutionStatus(ExecutionStatus.CLONING);
-        List<MeasurementPOJO> measurementPOJOs = mongoReader.getAllMeasurements();
-        for (MeasurementPOJO measurementPOJO : measurementPOJOs) {
-            pojoDatasetDump.measurementPOJOList.add(measurementPOJO);
-        }
-        pojoDatasetDump.phenomenonPOJOList = mongoReader.getAllPhenomenon();
-        pojoDatasetDump.trackPOJOList = mongoReader.getAllTracks();
-        pojoDatasetDump.userPOJOList = mongoReader.getAllUsers();
-        this.setExecutionStatus(ExecutionStatus.DATASETDUMPED);
-        return pojoDatasetDump;
+        pojoDatasetDump.measurementPOJOList = testcloner.mongoReader.getAllMeasurements();
+        pojoDatasetDump.userPOJOList = testcloner.mongoReader.getAllUsers();
+        pojoDatasetDump.trackPOJOList = testcloner.mongoReader.getAllTracks();
+        pojoDatasetDump.phenomenonPOJOList = testcloner.mongoReader.getAllPhenomenon();
+        pojoDatasetDump.sensorPOJOList = testcloner.mongoReader.getAllSensors();
 
+        return pojoDatasetDump;
     }
 
     @Override

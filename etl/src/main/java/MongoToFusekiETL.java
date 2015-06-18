@@ -23,7 +23,7 @@ public class MongoToFusekiETL implements ETLProcess {
     public static void main(String[] args) throws GeometryConverterException, UnknownHostException {
         MongoToFusekiETL etl = new MongoToFusekiETL();
         POJODatasetDump pojoDatasetDump = etl.mongoCloner.cloneIntoMemory();
-        System.out.println(etl.dataSetDump.userPOJOList.get(0));
+        etl.dataSetDump = pojoDatasetDump;
     }
 
     @Override
