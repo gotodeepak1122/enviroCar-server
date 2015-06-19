@@ -24,6 +24,16 @@
             <groupId>org.envirocar.server</groupId>
             <artifactId>mongo</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.jena</groupId>
+            <artifactId>apache-jena-libs</artifactId>
+            <type>pom</type>
+            <version>2.13.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.envirocar.server</groupId>
+            <artifactId>rest</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
