@@ -4,9 +4,10 @@ import com.google.inject.*;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
-import org.bson.types.ObjectId;
+import entity.MongoCloner;
 import org.envirocar.server.core.entities.EntityFactory;
 import org.envirocar.server.core.entities.Track;
+import org.envirocar.server.core.exception.GeometryConverterException;
 import org.envirocar.server.core.guice.CoreModule;
 import org.envirocar.server.core.guice.EventModule;
 import org.envirocar.server.core.guice.UpdaterModule;
@@ -23,6 +24,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
+import java.net.UnknownHostException;
 import java.util.Set;
 
 
@@ -49,7 +51,7 @@ public class RDFLinkerShowcase {
         this.entityFactory = entityFactory;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, GeometryConverterException {
         RDFLinkerShowcase showcase = Guice.createInjector(new RDFModule())
                 .getInstance(RDFLinkerShowcase.class);
 
@@ -65,10 +67,9 @@ public class RDFLinkerShowcase {
         return showcase.encodeTrack(trackToBeConverted);
     }
 
-    public Track createTrack() {
-        Track track = this.entityFactory.createTrack();
-        track.setIdentifier(new ObjectId().toString());
-        return track;
+    public Track createTrack() throws UnknownHostException, GeometryConverterException {
+
+        return new MongoCloner().cloneIntoMemory().trackPOJOList.get(0);
     }
 
     public Model encodeTrack(Track track) {
