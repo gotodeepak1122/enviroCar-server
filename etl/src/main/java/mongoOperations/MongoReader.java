@@ -64,7 +64,6 @@ public class MongoReader {
             DBObject dbObject = dbCursor.next();
             measurementList.add(getMeasurementFromDbObject(dbObject));
         }
-        System.out.println("mszie " + measurementList.size());
         return measurementList;
     }
 

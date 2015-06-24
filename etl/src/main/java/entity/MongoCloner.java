@@ -2,12 +2,12 @@ package entity;
 
 import constants.ExecutionStatus;
 import dataSetDump.POJODatasetDump;
+import dataSetDump.POJOEntities.MeasurementPOJO;
+import dataSetDump.POJOEntities.TrackPOJO;
 import mongoOperations.MongoReader;
-import org.envirocar.server.core.exception.GeometryConverterException;
 
 import java.net.UnknownHostException;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author deepaknair on 17/06/15 AD.
@@ -36,7 +36,7 @@ public class MongoCloner implements DBCloner {
     }
 
 
-    public POJODatasetDump cloneIntoMemory() throws GeometryConverterException, UnknownHostException {
+    public POJODatasetDump cloneIntoMemory() throws Exception {
 
         /**
          * Dump is being populated
@@ -46,11 +46,44 @@ public class MongoCloner implements DBCloner {
         pojoDatasetDump.measurementPOJOList = testcloner.mongoReader.getAllMeasurements();
         pojoDatasetDump.userPOJOList = testcloner.mongoReader.getAllUsers();
         pojoDatasetDump.trackPOJOList = testcloner.mongoReader.getAllTracks();
+        populateTracksWithMeasurements(pojoDatasetDump);
         pojoDatasetDump.phenomenonPOJOList = testcloner.mongoReader.getAllPhenomenon();
         pojoDatasetDump.sensorPOJOList = testcloner.mongoReader.getAllSensors();
 
         return pojoDatasetDump;
     }
+
+    /**
+     * Iterated through the measurements and runs through their tracks
+     * run this only after all the measurements have been populated
+     */
+
+    private void populateTracksWithMeasurements(POJODatasetDump pojoDatasetDump) throws Exception {
+        // using a map because it is faster than iterating over each measurement to populate one track O(n)2
+
+        Map<String, ArrayList<MeasurementPOJO>> trackToMeasurement = new HashMap<String, ArrayList<MeasurementPOJO>>();
+        for (MeasurementPOJO measurement : pojoDatasetDump.measurementPOJOList) {
+            String trackID = measurement.getTrack().getIdentifier();
+
+            if (trackToMeasurement.containsKey(trackID)) {
+                ArrayList<MeasurementPOJO> temp = trackToMeasurement.get(trackID);
+                temp.add(measurement);
+                trackToMeasurement.put(trackID, temp);
+            } else {
+                ArrayList<MeasurementPOJO> arrayList = new ArrayList<MeasurementPOJO>();
+                arrayList.add(measurement);
+                trackToMeasurement.put(trackID, arrayList);
+
+            }
+            for (TrackPOJO trackPOJO : pojoDatasetDump.trackPOJOList) {
+                ArrayList<MeasurementPOJO> trackMeasurements = trackToMeasurement.get(trackPOJO.getIdentifier());
+                trackPOJO.setMeasurementPOJOs(trackMeasurements);
+            }
+        }
+
+
+    }
+
 
     @Override
     public ExecutionStatus getExecutionStatus() {

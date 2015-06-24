@@ -3,15 +3,8 @@ package loader;
 import com.hp.hpl.jena.query.DatasetAccessor;
 import com.hp.hpl.jena.query.DatasetAccessorFactory;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.Resource;
 import constants.DBNames;
 import org.envirocar.server.core.entities.Track;
-import org.envirocar.server.rest.encoding.rdf.RDFLinker;
-import org.envirocar.server.rest.resources.RootResource;
-import org.envirocar.server.rest.resources.TracksResource;
-
-import java.net.URI;
 
 /**
  * @author deepaknair on 17/06/15 AD.
@@ -42,10 +35,10 @@ public class FusekiLoader implements TripleStoreLoader {
         return convertedModel;
     }
 
-    public Model encodeTrack(Track track) {
+   /* public Model encodeTrack(TrackPOJO track) {
         Model m = ModelFactory.createDefaultModel();
 
-        URI trackURI = uriBuilder.get()
+        URI trackURI = UriBuilder.fromPath("https://envirocar.org/api/stable")
                 .path(RootResource.class)
                 .path(RootResource.TRACKS)
                 .path(TracksResource.TRACK)
@@ -56,7 +49,7 @@ public class FusekiLoader implements TripleStoreLoader {
         }
         return m;
 
-    }
+    }*/
 
 
 }

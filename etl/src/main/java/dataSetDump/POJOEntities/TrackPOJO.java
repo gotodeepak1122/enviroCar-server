@@ -6,6 +6,8 @@ import org.envirocar.server.core.entities.Track;
 import org.envirocar.server.core.entities.User;
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 /**
  * @author deepaknair on 17/06/15 AD.
  */
@@ -25,6 +27,9 @@ public class TrackPOJO implements Track {
     private String appVersion;   // ask for a sample track with this attribute
     private DateTime creationTime;
     private DateTime modificationTime;
+
+    // specific to dumps , extracts all measurements of the track
+    private List<MeasurementPOJO> measurementPOJOs;
 
 
     @Override
@@ -279,5 +284,24 @@ public class TrackPOJO implements Track {
             return true;
     }
 
+    /**
+     * this embeds all tracks in the list ,can be filled up by iterating through a measurement dump
+     *
+     * @return MeasurementPOJO List
+     */
 
+    public List<MeasurementPOJO> getMeasurementPOJOs() throws Exception {
+        if (this.measurementPOJOs.size() == 0) {
+            throw new Exception("Track " + this.getIdentifier() + "has no measurements");
+        }
+        return measurementPOJOs;
+    }
+
+    public void setMeasurementPOJOs(List<MeasurementPOJO> measurementPOJOs) {
+        this.measurementPOJOs = measurementPOJOs;
+    }
+
+    public void addMeasurementPOJOs(MeasurementPOJO measurementPOJOs) {
+        this.measurementPOJOs.add(measurementPOJOs);
+    }
 }

@@ -4,7 +4,6 @@ import com.google.inject.*;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
-import entity.MongoCloner;
 import org.envirocar.server.core.entities.EntityFactory;
 import org.envirocar.server.core.entities.Track;
 import org.envirocar.server.core.exception.GeometryConverterException;
@@ -24,7 +23,6 @@ import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
-import java.net.UnknownHostException;
 import java.util.Set;
 
 
@@ -55,9 +53,9 @@ public class RDFLinkerShowcase {
         RDFLinkerShowcase showcase = Guice.createInjector(new RDFModule())
                 .getInstance(RDFLinkerShowcase.class);
 
-        Track track = showcase.createTrack();
-        Model model = showcase.encodeTrack(track);
-        showcase.writeTo(model, System.out);
+        // Track track = showcase.createTrack();
+        // Model model = showcase.encodeTrack(track);
+        //  showcase.writeTo(model, System.out);
     }
 
     public static Model convertEntityToRDF(Track trackToBeConverted) {
@@ -67,10 +65,7 @@ public class RDFLinkerShowcase {
         return showcase.encodeTrack(trackToBeConverted);
     }
 
-    public Track createTrack() throws UnknownHostException, GeometryConverterException {
 
-        return new MongoCloner().cloneIntoMemory().trackPOJOList.get(0);
-    }
 
     public Model encodeTrack(Track track) {
         Model m = ModelFactory.createDefaultModel();
