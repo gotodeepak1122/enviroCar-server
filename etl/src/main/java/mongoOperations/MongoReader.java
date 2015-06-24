@@ -17,13 +17,13 @@ import java.util.*;
 
 /**
  *   @author deepaknair on 14/06/15 AD.
- *   Mongo Utilities and processes that help the extractor
+ *   Mongo Utilities CLass that processes and helps the extractor to extract dat from mongoDB
  *   TODO
  *   rewrite code with morphia and guice frameWork  -- find out appropriate measurement filter to use Morphia.get()
  *   Reuse String Db names
  *   TODO
  *   use Constants for db name
-   */
+ */
 
 
 public class MongoReader {
