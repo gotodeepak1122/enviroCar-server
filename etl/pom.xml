@@ -34,11 +34,6 @@
             <groupId>org.envirocar.server</groupId>
             <artifactId>rest</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.1.1</version>
-        </dependency>
     </dependencies>
 
 </project>

@@ -1,5 +1,6 @@
 import dataSetDump.DatasetDump;
 import dataSetDump.POJODatasetDump;
+import dataSetDump.POJOEntities.TrackPOJO;
 import entity.Cloner;
 import entity.MongoCloner;
 import loader.FusekiLoader;
@@ -8,7 +9,10 @@ import java.net.UnknownHostException;
 
 /**
  * @author deepaknair on 18/06/15 AD.
+ * an implementation of an ETL process which runs from Mongo source to Fuseki Destination
  */
+
+
 public class MongoToFusekiETL implements ETLProcess {
 
     MongoCloner mongoCloner;
@@ -20,16 +24,20 @@ public class MongoToFusekiETL implements ETLProcess {
         this.fusekiLoader = new FusekiLoader();
     }
 
+    /**
+     * Early release Loader extractor and Loader are work with all and loader can transform tracks from the dataset dump
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         MongoToFusekiETL etl = new MongoToFusekiETL();
         POJODatasetDump pojoDatasetDump = etl.mongoCloner.cloneIntoMemory();
         etl.dataSetDump = pojoDatasetDump;
+        for (TrackPOJO trackPOJO1 : etl.dataSetDump.trackPOJOList) {
+            etl.fusekiLoader.putIntoFuseki(etl.fusekiLoader.encodeTrack(trackPOJO1));
+        }
 
-        /*for (Track track : pojoDatasetDump.trackPOJOList) {
-            System.out.println(track.toString());
-            FusekiLoader.putIntoFuseki(etl.fusekiLoader.convertEntityToRDF(track));
-            etl.fusekiLoader.convertEntityToRDF(track);
-        }*/
     }
 
     @Override
