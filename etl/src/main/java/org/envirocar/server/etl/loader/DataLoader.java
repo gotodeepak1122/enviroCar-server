@@ -14,23 +14,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.envirocar.server.rest.encoding.rdf;
-
-import com.google.inject.Provider;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
-import org.envirocar.server.rest.rights.AccessRights;
-
-import javax.ws.rs.core.UriBuilder;
+package org.envirocar.server.etl.loader;
 
 /**
- * TODO JavaDoc
- *
- * @param <T> the org.envirocar.server.etl.entity type
- *
- * @author Christian Autermann <autermann@uni-muenster.de>
+ * @author deepaknair on 17/06/15 AD.
+ *         An org.envirocar.server.etl.entity that perfoms load into a target datastore
+ *         Typically Extracts the data from the in memory dataset dump , transforms the data and laods it into the target datastore
  */
-public interface RDFLinker<T> {
-    void link(Model m, T t, AccessRights rights,
-              Resource uri, Provider<UriBuilder> uriBuilder);
+
+
+public interface DataLoader {
+
 }

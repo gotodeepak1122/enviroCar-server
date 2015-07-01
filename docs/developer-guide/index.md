@@ -83,7 +83,7 @@ bind(SomeListener.class).asEagerSingleton();
 
 ## RDF API ##
 
-Additional resources can be linked by implementing the interface `RDFLinker<T>` for the entity type `T`:
+Additional resources can be linked by implementing the interface `RDFLinker<T>` for the org.envirocar.server.etl.entity type `T`:
 
 ```java
 import javax.ws.rs.core.UriBuilder;

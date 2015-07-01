@@ -1,4 +1,4 @@
-/*
+package org.envirocar.server.etl;/*
  * Copyright (C) 2013 The enviroCar project
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,23 +14,29 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.envirocar.server.rest.encoding.rdf;
 
-import com.google.inject.Provider;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.Resource;
-import org.envirocar.server.rest.rights.AccessRights;
-
-import javax.ws.rs.core.UriBuilder;
+import org.envirocar.server.etl.dataSetDump.DatasetDump;
+import org.envirocar.server.etl.entity.Cloner;
+import org.envirocar.server.etl.loader.FusekiLoader;
 
 /**
- * TODO JavaDoc
- *
- * @param <T> the org.envirocar.server.etl.entity type
- *
- * @author Christian Autermann <autermann@uni-muenster.de>
+ * @author deepaknair on 17/06/15 AD.
  */
-public interface RDFLinker<T> {
-    void link(Model m, T t, AccessRights rights,
-              Resource uri, Provider<UriBuilder> uriBuilder);
+
+
+public interface ETLProcess {
+
+    // Extract
+
+    public Cloner getCloner();
+
+    // Transform
+
+    public DatasetDump getDataSetDump();
+
+    // Load
+
+    public FusekiLoader getDumpWriter();
+
+
 }

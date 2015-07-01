@@ -16,12 +16,6 @@
  */
 package org.envirocar.server.mongo.dao;
 
-import org.envirocar.server.core.util.pagination.Paginated;
-import org.envirocar.server.core.util.pagination.Pagination;
-import org.envirocar.server.mongo.MongoDB;
-import org.envirocar.server.mongo.entity.MongoEntityBase;
-import org.joda.time.DateTime;
-
 import com.github.jmkgreen.morphia.Datastore;
 import com.github.jmkgreen.morphia.Key;
 import com.github.jmkgreen.morphia.dao.BasicDAO;
@@ -31,12 +25,17 @@ import com.github.jmkgreen.morphia.query.UpdateOperations;
 import com.github.jmkgreen.morphia.query.UpdateResults;
 import com.mongodb.DBRef;
 import com.mongodb.WriteResult;
+import org.envirocar.server.core.util.pagination.Paginated;
+import org.envirocar.server.core.util.pagination.Pagination;
+import org.envirocar.server.mongo.MongoDB;
+import org.envirocar.server.mongo.entity.MongoEntityBase;
+import org.joda.time.DateTime;
 
 /**
  * TODO JavaDoc
  *
  * @param <K> the key type
- * @param <E> the entity type
+ * @param <E> the org.envirocar.server.etl.entity type
  * @param <C> the collection type
  *
  * @author Christian Autermann <autermann@uni-muenster.de>
