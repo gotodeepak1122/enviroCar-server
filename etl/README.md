@@ -11,10 +11,10 @@ This is the ETL module for the enviroCar server
 
 <b> Steps for Running module </b>
 
-<li>
-<ul>unzip the <a href="https://github.com/gotodeepak1122/enviroCar-server/tree/master/etl/src/main/resources/EnviroCarTestData" >resources/envirocar.zip</a> file and load it onto your local mongodb instance using 'mongorestore -d enviroCar enviroCar' </ul>
-<ul>hi</ul>
-<ul>eded</ul>
-<ul>edededed</ul>
-</li>
+<ul>
+<li>unzip the <a href="https://github.com/gotodeepak1122/enviroCar-server/tree/master/etl/src/main/resources/EnviroCarTestData" >resources/envirocar.zip</a> file and load it onto your local mongodb instance using 'mongorestore -d enviroCar enviroCar' </li>
+<li>hi</li>
+<li>eded</li>
+<li>edededed</li>
+</ul>
 
