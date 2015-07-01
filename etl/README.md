@@ -12,9 +12,11 @@ This is the ETL module for the enviroCar server
 <b> Steps for Running module </b>
 
 <ul>
-<li>unzip the <a href="https://github.com/gotodeepak1122/enviroCar-server/tree/master/etl/src/main/resources/EnviroCarTestData" >resources/envirocar.zip</a> file and load it onto your local mongodb instance using 'mongorestore -d enviroCar enviroCar' </li>
-<li>hi</li>
-<li>eded</li>
-<li>edededed</li>
+<li>unzip the <a href="https://github.com/gotodeepak1122/enviroCar-server/tree/master/etl/src/main/resources/EnviroCarTestData" >resources/envirocar.zip</a> file and load it onto your local mongodb instance using 'mongorestore -d enviroCar enviroCar' command </li>
+<li>Place <a href ="https://github.com/gotodeepak1122/enviroCar-server/tree/master/etl/src/main/resources">fuseki war file</a> and upload the war file in tomcat and launch it</li>
+<li>after starting tomcat go to "http://localhost:8080/fuseki" and usnig the user interface navigate to <em>manage datasets -> add new dataset</em> in the Dataset name type in 'envirocar' and choose the persisent store option </li>
+<li>Clone the envirocar repo by 'git clone https://github.com/gotodeepak1122/enviroCar-server' into your local repository</li>
+<li>navigate to the etl directory and execute 'mvn clean package'</li>
+<li>Open any browser and type in the url "http://localhost:8080/fuseki" and experience the SPARQL endpoint  </li>
 </ul>
 
