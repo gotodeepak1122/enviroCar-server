@@ -7,6 +7,8 @@ This is the ETL module for the enviroCar server
  -> The datasetdump   <br/>
  -> The destination Loader <br/>
  </div> <br/>
+ 
+ <img src ="https://drive.google.com/file/d/0B_H46yHBn4pUVE1fa3Y0aGZva0U/view?usp=sharing" >
 
 <b> Steps for Running module </b>
 
