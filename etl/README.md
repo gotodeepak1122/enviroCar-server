@@ -8,7 +8,7 @@ This is the ETL module for the enviroCar server
  -> The destination Loader <br/>
  </div> <br/>
  
- <img src ="https://drive.google.com/file/d/0B_H46yHBn4pUVE1fa3Y0aGZva0U/view?usp=sharing" >
+The  <a href="https://drive.google.com/file/d/0B_H46yHBn4pUVE1fa3Y0aGZva0U/view?usp=sharing" Path Flow></a> diagram of how this module functions can be found here <br/>
 
 <b> Steps for Running module </b>
 
