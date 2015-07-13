@@ -17,7 +17,6 @@ package org.envirocar.server.etl;/*
 
 import org.envirocar.server.etl.dataSetDump.DatasetDump;
 import org.envirocar.server.etl.dataSetDump.POJODatasetDump;
-import org.envirocar.server.etl.dataSetDump.POJOEntities.TrackPOJO;
 import org.envirocar.server.etl.entity.Cloner;
 import org.envirocar.server.etl.entity.MongoCloner;
 import org.envirocar.server.etl.loader.FusekiLoader;
@@ -51,9 +50,8 @@ public class MongoToFusekiETL implements ETLProcess {
         MongoToFusekiETL etl = new MongoToFusekiETL();
         POJODatasetDump pojoDatasetDump = etl.mongoCloner.cloneIntoMemory();
         etl.dataSetDump = pojoDatasetDump;
-        for (TrackPOJO trackPOJO1 : etl.dataSetDump.trackPOJOList) {
-            etl.fusekiLoader.putIntoFuseki(etl.fusekiLoader.encodeTrack(trackPOJO1));
-        }
+        etl.fusekiLoader.putIntoFuseki(FusekiLoader.encodeTracks(etl.dataSetDump.trackPOJOList));
+
 
     }
 
