@@ -10,7 +10,8 @@ import org.envirocar.server.etl.loader.RDFDumpWriter;
 import java.net.UnknownHostException;
 
 /**
- * @author deepaknair on 14/07/15.
+ * @author deepaknair on 14/07/15
+ * Creates an RDF dump of file of all envirocar data , usefuel for updating through sparql protocolo.
  */
 public class MongoToRDFFile implements ETLProcess {
 
