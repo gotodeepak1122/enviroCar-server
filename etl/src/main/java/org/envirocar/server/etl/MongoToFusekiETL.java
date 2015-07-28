@@ -1,4 +1,6 @@
-package org.envirocar.server.etl;/*
+package org.envirocar.server.etl;
+
+/*
  * Copyright (C) 2013 The enviroCar project
  *
  * This program is free software: you can redistribute it and/or modify
