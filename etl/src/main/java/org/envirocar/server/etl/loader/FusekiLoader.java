@@ -26,6 +26,7 @@ import com.vividsolutions.jts.geom.Point;
 import org.envirocar.server.core.entities.Track;
 import org.envirocar.server.etl.constants.DBNames;
 import org.envirocar.server.etl.dataSetDump.POJOEntities.*;
+import org.envirocar.server.etl.utils.ConfigReader;
 import org.envirocar.server.rest.encoding.rdf.vocab.DCTerms;
 import org.envirocar.server.rest.encoding.rdf.vocab.DUL;
 import org.envirocar.server.rest.encoding.rdf.vocab.W3CGeo;
@@ -34,6 +35,7 @@ import org.envirocar.server.rest.resources.RootResource;
 import org.envirocar.server.rest.resources.TracksResource;
 
 import javax.ws.rs.core.UriBuilder;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -99,8 +101,13 @@ public class FusekiLoader implements TripleStoreLoader {
 
     }
 
-    public void putIntoFuseki(Model model) {
-        String serviceURI = "http://localhost:8080/fuseki/envirocar/data";
+    public void putIntoFuseki(Model model) throws IOException {
+
+        // Load the fuseki hosted url from configs
+        ConfigReader.read();
+
+
+        String serviceURI = ConfigReader.FUSEKI_URL + "/enviroCar/data";
         DatasetAccessorFactory factory = new DatasetAccessorFactory();
         DatasetAccessor accessor;
         accessor = DatasetAccessorFactory.createHTTP(serviceURI);
