@@ -53,7 +53,7 @@
                             <goal>java</goal>
                         </goals>
                         <configuration>
-                            <mainClass>org.envirocar.server.etl.MongoToFusekiETL</mainClass>
+                            <mainClass>org.envirocar.server.etl.MongoToRDFFile</mainClass>
                         </configuration>
                     </execution>
                 </executions>
