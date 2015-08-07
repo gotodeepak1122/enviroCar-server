@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.envirocar.server.etl.mongoOperations;
+package org.envirocar.server.etl.utils;
 
 import com.mongodb.*;
 import com.vividsolutions.jts.geom.Geometry;
@@ -43,7 +43,7 @@ import java.util.*;
  */
 
 
-public class MongoReader {
+public class MongoUtils {
 
 
     private static MongoClient mongoClient;
@@ -56,7 +56,7 @@ public class MongoReader {
      * @throws UnknownHostException
      */
 
-    public MongoReader() throws UnknownHostException {
+    public MongoUtils() throws UnknownHostException {
         mongoClient = new MongoClient();
         db = mongoClient.getDB("enviroCar");
     }
@@ -119,12 +119,15 @@ public class MongoReader {
     }
 
     public List<UserPOJO> getAllUsers() {
+        System.out.println("entering function");
         collection = db.getCollection("users");
         List<UserPOJO> userPOJOs = new ArrayList<UserPOJO>();
         DBCursor dbCursor = collection.find();
+        System.out.println(dbCursor.size());
         while (dbCursor.hasNext()) {
             DBObject dbObject = dbCursor.next();
             userPOJOs.add(getUserFromDbObject(dbObject));
+
         }
         return userPOJOs;
     }
@@ -136,6 +139,8 @@ public class MongoReader {
         userPOJO.setAdmin((Boolean) dbObject.get("isAdmin"));
         userPOJO.setName((String) dbObject.get("_id"));
         userPOJO.setMail((String) dbObject.get("mail"));
+        System.out.println("mongo inside final func" + dbObject.get("_id"));
+        System.out.println("inside final func" + userPOJO.getName());
         return userPOJO;
     }
 

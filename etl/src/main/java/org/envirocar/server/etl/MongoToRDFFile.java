@@ -22,6 +22,7 @@ import org.envirocar.server.etl.entity.Cloner;
 import org.envirocar.server.etl.entity.MongoCloner;
 import org.envirocar.server.etl.loader.FusekiLoader;
 import org.envirocar.server.etl.loader.RDFDumpWriter;
+import org.envirocar.server.etl.utils.RDFUtils;
 
 import java.net.UnknownHostException;
 
@@ -34,7 +35,7 @@ public class MongoToRDFFile implements ETLProcess {
 
     MongoCloner mongoCloner;
     POJODatasetDump dataSetDump;
-    RDFDumpWriter rdfDumpWriter;
+    //RDFDumpWriter rdfDumpWriter;
 
     MongoToRDFFile() throws UnknownHostException {
         this.mongoCloner = new MongoCloner();
@@ -43,7 +44,10 @@ public class MongoToRDFFile implements ETLProcess {
     public static void main(String[] args) throws Exception {
         MongoToRDFFile etl = new MongoToRDFFile();
         etl.dataSetDump = etl.mongoCloner.cloneIntoMemory();
-        RDFDumpWriter.writeIntoFile(FusekiLoader.encodeTracks(etl.dataSetDump.trackPOJOList), "model.rdf");
+        RDFDumpWriter.writeIntoFile(RDFUtils.encodeTracks(etl.dataSetDump.trackPOJOList), "tracks.rdf");
+        RDFDumpWriter.writeIntoFile(RDFUtils.encodeMeasurements(etl.dataSetDump.measurementPOJOList), "measurements.rdf");
+        RDFDumpWriter.writeIntoFile(RDFUtils.encodeUsers(etl.dataSetDump.userPOJOList), "users.rdf");
+
     }
 
     @Override

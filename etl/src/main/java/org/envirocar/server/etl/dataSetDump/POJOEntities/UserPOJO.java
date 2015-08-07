@@ -28,6 +28,13 @@ import java.util.Set;
  * @author deepaknair on 17/06/15 AD.
  */
 public class UserPOJO implements User {
+
+    private String name;
+    private String mail;
+    private String token;
+    private Boolean isAdmin;
+
+
     @Override
     public Set<String> getBadges() {
         return null;
@@ -40,57 +47,71 @@ public class UserPOJO implements User {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public void setName(String name) {
-
+        this.name = name;
     }
 
     @Override
     public boolean hasName() {
-        return false;
+
+        if (this.getName() == null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override
     public String getMail() {
-        return null;
+        return this.mail;
     }
 
     @Override
     public void setMail(String mail) {
-
+        this.mail = mail;
     }
 
     @Override
     public boolean hasMail() {
-        return false;
+        if (this.getMail() == null) {
+            return false;
+        } else {
+            return true;
+        }
+
     }
 
     @Override
     public String getToken() {
-        return null;
+        return this.token;
     }
 
     @Override
     public void setToken(String token) {
-
+        this.token = token;
     }
 
     @Override
     public boolean hasToken() {
-        return false;
+        if (this.getName() != null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override
     public boolean isAdmin() {
-        return false;
+        return this.isAdmin;
     }
 
     @Override
     public void setAdmin(boolean isAdmin) {
-
+        this.isAdmin = isAdmin;
     }
 
     @Override

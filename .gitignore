@@ -10,3 +10,4 @@
 #idea intellij
 *.iml
 .idea/*
+*rdf

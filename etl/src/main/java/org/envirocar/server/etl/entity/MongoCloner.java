@@ -20,7 +20,7 @@ import org.envirocar.server.etl.constants.ExecutionStatus;
 import org.envirocar.server.etl.dataSetDump.POJODatasetDump;
 import org.envirocar.server.etl.dataSetDump.POJOEntities.MeasurementPOJO;
 import org.envirocar.server.etl.dataSetDump.POJOEntities.TrackPOJO;
-import org.envirocar.server.etl.mongoOperations.MongoReader;
+import org.envirocar.server.etl.utils.MongoUtils;
 
 import java.net.UnknownHostException;
 import java.util.*;
@@ -35,14 +35,14 @@ import java.util.*;
 public class MongoCloner implements DBCloner {
 
     private Set<String> supportedCollections;
-    private MongoReader mongoReader;
+    private MongoUtils mongoUtils;
     private Date LastExecutionTime;
     private ExecutionStatus executionStatus;
 
 
     public MongoCloner() throws UnknownHostException {
         this.setExecutionStatus(ExecutionStatus.IDLE);
-        this.mongoReader = new MongoReader();
+        this.mongoUtils = new MongoUtils();
     }
 
 
@@ -59,12 +59,12 @@ public class MongoCloner implements DBCloner {
          */
         MongoCloner testcloner = new MongoCloner();
         POJODatasetDump pojoDatasetDump = new POJODatasetDump();
-        pojoDatasetDump.measurementPOJOList = testcloner.mongoReader.getAllMeasurements();
-        pojoDatasetDump.userPOJOList = testcloner.mongoReader.getAllUsers();
-        pojoDatasetDump.trackPOJOList = testcloner.mongoReader.getAllTracks();
+        pojoDatasetDump.userPOJOList = testcloner.mongoUtils.getAllUsers();
+        pojoDatasetDump.measurementPOJOList = testcloner.mongoUtils.getAllMeasurements();
+        pojoDatasetDump.trackPOJOList = testcloner.mongoUtils.getAllTracks();
         populateTracksWithMeasurements(pojoDatasetDump);
-        pojoDatasetDump.phenomenonPOJOList = testcloner.mongoReader.getAllPhenomenon();
-        pojoDatasetDump.sensorPOJOList = testcloner.mongoReader.getAllSensors();
+        pojoDatasetDump.phenomenonPOJOList = testcloner.mongoUtils.getAllPhenomenon();
+        pojoDatasetDump.sensorPOJOList = testcloner.mongoUtils.getAllSensors();
 
         return pojoDatasetDump;
     }
