@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2013 The enviroCar project
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.envirocar.server.etl.utils;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -42,7 +58,6 @@ public class RDFUtils {
 
     }
 
-
     public static Model encodeTracks(List<TrackPOJO> trackPOJOList) throws Exception {
         Model m = ModelFactory.createDefaultModel();
         for (TrackPOJO trackPOJO : trackPOJOList) {
@@ -68,7 +83,6 @@ public class RDFUtils {
         }
         return m;
     }
-
 
     /**
      * Encodes track POJO into RDF
@@ -115,7 +129,6 @@ public class RDFUtils {
         return m;
     }
 
-
     /**
      * This class shows the process involved in converting MeasurementPOJO into RDF linkers
      *
@@ -161,7 +174,6 @@ public class RDFUtils {
 
     }
 
-
     public static void encodeUser(UserPOJO userPOJO, Model userModel) {
 
 
@@ -179,8 +191,13 @@ public class RDFUtils {
 
         NonRestrictiveRights rights = new NonRestrictiveRights();
         Resource r = userModel.createResource(userURI);
+
+        //VCard Linkage
         r.addProperty(VCARD.EMAIL, userPOJO.getMail())
                 .addProperty(VCARD.NICKNAME, userPOJO.getName());
+
+        //FOAF Linkage
+
         r.addProperty(RDF.type, FOAF.Person);
         r.addLiteral(FOAF.nick, userPOJO.getName());
         if (userPOJO.hasFirstName() && rights.canSeeFirstNameOf(userPOJO)) {
@@ -211,6 +228,24 @@ public class RDFUtils {
         r.addProperty(DCTerms.rights, DCTermsLinker.ODBL_URL);
 
     }
+
+    public static void encodePhenomenon() {
+
+    }
+
+   /* public static void encodeActivities(ActivityPOJO activityPOJO ,Model activityModel){
+        URI activityURI =
+
+    }*/
+
+    private void linkDCTerms(Model modelToBeLinked, Resource resource) {
+        modelToBeLinked.setNsPrefix(DCTerms.PREFIX, DCTerms.URI);
+        resource.addProperty(DCTerms.rights, DCTermsLinker.ODBL_URL);
+
+    }
+
+
+
 
 
 }

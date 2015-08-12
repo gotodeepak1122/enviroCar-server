@@ -65,6 +65,7 @@ public class MongoCloner implements DBCloner {
         populateTracksWithMeasurements(pojoDatasetDump);
         pojoDatasetDump.phenomenonPOJOList = testcloner.mongoUtils.getAllPhenomenon();
         pojoDatasetDump.sensorPOJOList = testcloner.mongoUtils.getAllSensors();
+        pojoDatasetDump.activityPOJOList = testcloner.mongoUtils.getAllActivities();
 
         return pojoDatasetDump;
     }

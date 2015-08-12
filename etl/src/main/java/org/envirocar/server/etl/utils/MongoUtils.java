@@ -21,6 +21,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.bson.BSONObject;
 import org.bson.types.ObjectId;
+import org.envirocar.server.core.activities.ActivityType;
 import org.envirocar.server.core.exception.GeometryConverterException;
 import org.envirocar.server.etl.dataSetDump.POJOEntities.*;
 import org.envirocar.server.mongo.entity.MongoMeasurementValue;
@@ -119,11 +120,9 @@ public class MongoUtils {
     }
 
     public List<UserPOJO> getAllUsers() {
-        System.out.println("entering function");
         collection = db.getCollection("users");
         List<UserPOJO> userPOJOs = new ArrayList<UserPOJO>();
         DBCursor dbCursor = collection.find();
-        System.out.println(dbCursor.size());
         while (dbCursor.hasNext()) {
             DBObject dbObject = dbCursor.next();
             userPOJOs.add(getUserFromDbObject(dbObject));
@@ -131,6 +130,34 @@ public class MongoUtils {
         }
         return userPOJOs;
     }
+
+    public List<ActivityPOJO> getAllActivities() {
+        collection = db.getCollection("activities");
+        List<ActivityPOJO> activityPOJOList = new ArrayList<ActivityPOJO>();
+        DBCursor dbCursor = collection.find();
+        while (dbCursor.hasNext()) {
+            DBObject dbObject = dbCursor.next();
+            activityPOJOList.add(getActivityFromDBObjet(dbObject));
+
+        }
+        return activityPOJOList;
+
+    }
+
+
+    private ActivityPOJO getActivityFromDBObjet(DBObject dbObject) {
+        ActivityPOJO activityPOJO = new ActivityPOJO();
+        ObjectId objectId = (ObjectId) dbObject.get("_id");
+        activityPOJO.setIdentifier(objectId.toString());
+        Date date = (Date) dbObject.get("time");
+        activityPOJO.setTime(new DateTime(date));
+        DBRef dbRef = (DBRef) dbObject.get("user");
+        activityPOJO.setUser(getUserFromDbObject(dbRef.fetch()));
+        activityPOJO.setType(ActivityType.valueOf((String) dbObject.get("type")));
+        return activityPOJO;
+
+    }
+
 
 
     private UserPOJO getUserFromDbObject(DBObject dbObject) {

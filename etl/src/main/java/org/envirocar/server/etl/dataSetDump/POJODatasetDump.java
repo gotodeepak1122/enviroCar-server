@@ -35,4 +35,5 @@ public class POJODatasetDump implements DatasetDump {
     public List<BadgePOJO> badgePOJOList;
     public List<PhenomenonPOJO> phenomenonPOJOList;
     public List<UserPOJO> userPOJOList;
+    public List<ActivityPOJO> activityPOJOList;
 }
