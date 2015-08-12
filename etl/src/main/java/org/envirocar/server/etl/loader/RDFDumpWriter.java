@@ -30,6 +30,7 @@ import java.io.OutputStream;
 public class RDFDumpWriter implements DataLoader {
     public static void writeIntoFile(Model model, String file) throws FileNotFoundException {
         OutputStream outputStream = new FileOutputStream(file);
+        model.setNsPrefix("base", "http://envirocar.org/");
         model.write(outputStream);
     }
 
