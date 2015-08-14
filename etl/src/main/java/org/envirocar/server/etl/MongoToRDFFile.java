@@ -42,11 +42,15 @@ public class MongoToRDFFile implements ETLProcess {
     }
 
     public static void main(String[] args) throws Exception {
+
         MongoToRDFFile etl = new MongoToRDFFile();
         etl.dataSetDump = etl.mongoCloner.cloneIntoMemory();
         RDFDumpWriter.writeIntoFile(RDFUtils.encodeTracks(etl.dataSetDump.trackPOJOList), "tracks.rdf");
         RDFDumpWriter.writeIntoFile(RDFUtils.encodeMeasurements(etl.dataSetDump.measurementPOJOList), "measurements.rdf");
         RDFDumpWriter.writeIntoFile(RDFUtils.encodeUsers(etl.dataSetDump.userPOJOList), "users.rdf");
+        RDFDumpWriter.writeIntoFile(RDFUtils.encodePhenomenons(etl.dataSetDump.phenomenonPOJOList), "phenomenons.rdf");
+        RDFDumpWriter.writeIntoFile(RDFUtils.encodeSensors(etl.dataSetDump.sensorPOJOList), "sensors.rdf");
+
 
     }
 

@@ -33,6 +33,4 @@ public class RDFDumpWriter implements DataLoader {
         model.setNsPrefix("base", "http://envirocar.org/");
         model.write(outputStream);
     }
-
-
 }

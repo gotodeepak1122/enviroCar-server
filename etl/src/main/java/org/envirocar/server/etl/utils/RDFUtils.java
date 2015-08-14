@@ -16,29 +16,27 @@
  */
 package org.envirocar.server.etl.utils;
 
+import com.google.inject.Provider;
+import com.hp.hpl.jena.datatypes.xsd.XSDDatatype;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.vocabulary.FOAF;
 import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 import com.hp.hpl.jena.vocabulary.VCARD;
 import com.vividsolutions.jts.geom.Point;
 import org.envirocar.server.core.entities.Track;
-import org.envirocar.server.etl.dataSetDump.POJOEntities.MeasurementPOJO;
-import org.envirocar.server.etl.dataSetDump.POJOEntities.TrackPOJO;
-import org.envirocar.server.etl.dataSetDump.POJOEntities.UserPOJO;
-import org.envirocar.server.rest.encoding.rdf.linker.DCTermsLinker;
-import org.envirocar.server.rest.encoding.rdf.linker.UserFOAFLinker;
-import org.envirocar.server.rest.encoding.rdf.linker.UserVCardLinker;
-import org.envirocar.server.rest.encoding.rdf.vocab.DCTerms;
-import org.envirocar.server.rest.encoding.rdf.vocab.DUL;
-import org.envirocar.server.rest.encoding.rdf.vocab.W3CGeo;
+import org.envirocar.server.etl.dataSetDump.POJOEntities.*;
+import org.envirocar.server.rest.encoding.rdf.linker.*;
+import org.envirocar.server.rest.encoding.rdf.vocab.*;
 import org.envirocar.server.rest.resources.*;
 import org.envirocar.server.rest.rights.NonRestrictiveRights;
 
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author deepaknair on 07/08/15.
@@ -76,13 +74,31 @@ public class RDFUtils {
 
     public static Model encodeUsers(List<UserPOJO> userPOJOList) throws Exception {
         Model m = ModelFactory.createDefaultModel();
-        System.out.println(userPOJOList.get(0).getName());
         for (UserPOJO userPOJO : userPOJOList) {
 
             encodeUser(userPOJO, m);
         }
         return m;
     }
+
+    public static Model encodePhenomenons(List<PhenomenonPOJO> phenomenonPOJOList) throws Exception {
+        Model m = ModelFactory.createDefaultModel();
+        for (PhenomenonPOJO phenomenonPOJO : phenomenonPOJOList) {
+            encodePhenomenon(phenomenonPOJO, m);
+        }
+        return m;
+    }
+
+
+    public static Model encodeSensors(List<SensorPOJO> sensorPOJOList) {
+        Model m = ModelFactory.createDefaultModel();
+        for (SensorPOJO sensorPOJO : sensorPOJOList) {
+            encodeSensor(m, sensorPOJO);
+        }
+        return m;
+    }
+
+
 
     /**
      * Encodes track POJO into RDF
@@ -229,8 +245,147 @@ public class RDFUtils {
 
     }
 
-    public static void encodePhenomenon() {
+    public static void encodePhenomenon(PhenomenonPOJO phenomenonPOJO, Model model) {
 
+        String phenomenonURI = UriBuilder.fromPath(root)
+                .path(RootResource.class)
+                .path(RootResource.PHENOMENONS)
+                .path(PhenomenonsResource.PHENOMENON)
+                .build(phenomenonPOJO.getName())
+                .toASCIIString();
+
+
+        model.setNsPrefix(DCTerms.PREFIX, DCTerms.URI);
+        model.setNsPrefix(SSN.PREFIX, SSN.URI);
+        model.setNsPrefix(DUL.PREFIX, DUL.URI);
+        //DC Terms
+
+
+        Resource resource = model.createResource(phenomenonURI);
+        linkDCTerms(model, resource);
+
+        //SSN
+
+        resource.addProperty(RDF.type, SSN.Property);
+        Resource unit = model.createResource(fragment(resource,
+                MeasurementSSNLinker.UNIT_FRAGMENT));
+        unit.addProperty(RDF.type, DUL.UnitOfMeasure);
+        unit.addLiteral(RDFS.comment, phenomenonPOJO.getUnit());
+
+        // DBPedia
+        DBPediaPhenomenonLinker dbPediaPhenomenonLinker = new DBPediaPhenomenonLinker();
+        Provider<UriBuilder> uri = null;
+        dbPediaPhenomenonLinker.link(model, phenomenonPOJO, new NonRestrictiveRights(), resource, uri);
+
+
+        // EEAPhenomenonLinker
+
+        EEAPhenomenonLinker eeaPhenomenonLinker = new EEAPhenomenonLinker();
+        Provider<UriBuilder> temporaryURI = null;
+        eeaPhenomenonLinker.link(model, phenomenonPOJO, new NonRestrictiveRights(), resource, temporaryURI);
+
+
+    }
+
+    public static void encodeSensor(Model m, SensorPOJO sensorPOJO) {
+
+
+        String CONSTRUCTION_YEAR_PROPERTY = "constructionYear";
+        String FUEL_TYPE_PROPERTY = "fuelType";
+        String MANUFACTURER_PROPERTY = "manufacturer";
+        String MODEL_PROPERTY = "model";
+        String FUEL_TYPE_DIESEL = "diesel";
+        String FUEL_TYPE_GASOLINE = "gasoline";
+        String FUEL_TYPE_BIODIESEL = "biodiesel";
+        String FUEL_TYPE_KEROSENE = "kerosene";
+        String CAR_TYPE = "car";
+
+
+        String sensorURI = UriBuilder.fromPath(root)
+                .path(RootResource.class)
+                .path(RootResource.SENSORS)
+                .path(SensorsResource.SENSOR)
+                .build(sensorPOJO.getIdentifier())
+                .toASCIIString();
+
+
+        m.setNsPrefix(DCTerms.PREFIX, DCTerms.URI);
+
+
+        Resource sensorResource = m.createResource(sensorURI);
+
+        // DC Terms
+        linkDCTerms(m, sensorResource);
+
+
+        // SSN
+
+        Resource sensorDULL = m.createResource(fragment(sensorResource, "sensor"));
+        sensorDULL.addProperty(RDF.type, SSN.Sensor);
+
+
+        if (sensorPOJO.hasType() && sensorPOJO.getType().equals(CAR_TYPE)) {
+            if (sensorPOJO.hasProperties()) {
+                final Map<String, Object> p = sensorPOJO.getProperties();
+                //Subclass of  http://purl.org/goodrelations/v1#ProductOrService
+                m.setNsPrefix(VSO.PREFIX, VSO.URI);
+                m.setNsPrefix(GoodRelations.PREFIX, GoodRelations.URI);
+                m.setNsPrefix(DBPedia.PREFIX, DBPedia.URI);
+                sensorResource.addProperty(RDF.type, VSO.Automobile);
+                addFuelType(p, m, sensorResource);
+                addContructionYear(p, sensorResource);
+
+                final String manufacturer = (String) p
+                        .get(MANUFACTURER_PROPERTY);
+                if (manufacturer != null) {
+                    sensorResource.addLiteral(GoodRelations.hasManufacturer,
+                            manufacturer);
+                    String model = (String) p.get(MODEL_PROPERTY);
+                    if (model != null) {
+                        final String hasMakeAndModel =
+                                manufacturer + "_" + model;
+                        sensorResource.addLiteral(GoodRelations.hasMakeAndModel,
+                                hasMakeAndModel);
+                    }
+                }
+            }
+        }
+
+
+    }
+
+
+    private static void addFuelType(final Map<String, Object> p, Model m, final Resource sensor) {
+        final String fuelType = (String) p.get(SensorVSOLinker.FUEL_TYPE_PROPERTY);
+        if (fuelType != null) {
+            if (fuelType.equals(SensorVSOLinker.FUEL_TYPE_DIESEL)) {
+                sensor.addProperty(VSO.fuelType, DBPedia.DBPEDIA_DIESEL);
+            } else if (fuelType.equals(SensorVSOLinker.FUEL_TYPE_GASOLINE)) {
+                sensor.addProperty(VSO.fuelType, DBPedia.DBPEDIA_GASOLINE);
+            } else if (fuelType.equals(SensorVSOLinker.FUEL_TYPE_BIODIESEL)) {
+                sensor.addProperty(VSO.fuelType, DBPedia.DBPEDIA_BIODIESEL);
+            } else if (fuelType.equals(SensorVSOLinker.FUEL_TYPE_KEROSENE)) {
+                sensor.addProperty(VSO.fuelType, DBPedia.DBPEDIA_KEROSENE);
+            }
+        }
+    }
+
+    private static void addContructionYear(
+            final Map<String, Object> p,
+            final Resource sensor) {
+        Number year = (Number) p.get(SensorVSOLinker.CONSTRUCTION_YEAR_PROPERTY);
+        if (year != null) {
+            final String modelDate = year.intValue() + "-01-01";
+            sensor.addProperty(VSO.modelDate, modelDate, XSDDatatype.XSDdate);
+        }
+    }
+
+
+    private static String fragment(Resource resource, String fragment) {
+        return UriBuilder.fromUri(resource.getURI())
+                .fragment(fragment)
+                .build()
+                .toASCIIString();
     }
 
    /* public static void encodeActivities(ActivityPOJO activityPOJO ,Model activityModel){
@@ -238,14 +393,10 @@ public class RDFUtils {
 
     }*/
 
-    private void linkDCTerms(Model modelToBeLinked, Resource resource) {
-        modelToBeLinked.setNsPrefix(DCTerms.PREFIX, DCTerms.URI);
+    private static void linkDCTerms(Model modelToBeLinked, Resource resource) {
         resource.addProperty(DCTerms.rights, DCTermsLinker.ODBL_URL);
 
     }
-
-
-
 
 
 }
