@@ -14,11 +14,9 @@ The  <a href="https://drive.google.com/file/d/0B_H46yHBn4pUVE1fa3Y0aGZva0U/view?
 
 <ul>
 <li>unzip the <a href="https://github.com/gotodeepak1122/enviroCar-server/tree/master/etl/src/main/resources/EnviroCarTestData" >resources/envirocar.zip</a> file and load it onto your local mongodb instance using 'mongorestore -d enviroCar enviroCar'</li>
-<li>Place the <a href ="https://github.com/gotodeepak1122/enviroCar-server/tree/master/etl/src/main/resources">fuseki war file</a> and upload the war file in tomcat and launch it</li>
-<li>After starting tomcat go to <a href ="http://localhost:8080/fuseki">http://localhost:8080/fuseki</a> and using the user interface navigate to <em>manage datasets -> add new dataset</em> in the Dataset name type in 'envirocar' and choose the persisent store option </li>
-<li>Clone the envirocar repo by 'git clone https://github.com/gotodeepak1122/enviroCar-server' into your local repository</li>
-<li>navigate to the etl directory and execute 'mvn clean package'</li>
-<li>Open any browser and type in the url <a href ="http://localhost:8080/fuseki">http://localhost:8080/fuseki</a> and experience the SPARQL endpoint  </li>
+<li> mvn clean install </li>
+<li> modify config.properties </li>
+<li> java -jar etl/target/etl-snapshot.0.0.1.jar (ensure fuseki and mongo is running before)  </li>
 </ul>
 
 <b>Tested with </b>
