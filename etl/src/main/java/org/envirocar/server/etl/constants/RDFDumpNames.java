@@ -18,6 +18,7 @@ package org.envirocar.server.etl.constants;
 
 import org.envirocar.server.etl.utils.ConfigReader;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -55,6 +56,17 @@ public class RDFDumpNames {
         rdfLocations.add(SENSORS_RDF_LOCATION);
         rdfLocations.add(TRACKS_RDF_LOCATION);
         rdfLocations.add(USERS_RDF_LOCATION);
+
+        for (String s : rdfLocations) {
+            File file = new File(s);
+            if (!file.exists()) {
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
     }
 
