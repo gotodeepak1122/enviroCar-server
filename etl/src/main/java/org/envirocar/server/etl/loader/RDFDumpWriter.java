@@ -32,5 +32,9 @@ public class RDFDumpWriter implements DataLoader {
         OutputStream outputStream = new FileOutputStream(file);
         model.setNsPrefix("base", "http://envirocar.org/");
         model.write(outputStream);
+
+
     }
+
+
 }

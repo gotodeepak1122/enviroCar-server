@@ -28,19 +28,20 @@ import java.util.Properties;
 
 public class ConfigReader {
 
-    public static String FUSEKI_URL;
     public static String MONGO_USERNAME;
     public static String MONGO_PASSWORD;
     public static String ENDPOINT_URL;
+    public static String DUMP_LOCATION;
 
 
     public static void read() throws IOException {
+
         Properties properties = new Properties();
-        properties.load(new FileInputStream("config.properties"));
-        FUSEKI_URL = (properties.getProperty("fuseki_url"));
+        properties.load(new FileInputStream(System.getProperty("user.dir") + "/config.properties"));
         MONGO_USERNAME = (properties.getProperty("username"));
         MONGO_PASSWORD = (properties.getProperty("password"));
         ENDPOINT_URL = (properties.getProperty("endpointurl"));
+        DUMP_LOCATION = (properties.getProperty("rdfdumplocation"));
 
     }
 

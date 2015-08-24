@@ -55,7 +55,7 @@ public class FusekiLoader implements TripleStoreLoader {
         ConfigReader.read();
 
 
-        String serviceURI = ConfigReader.FUSEKI_URL + "/enviroCar/data";
+        String serviceURI = ConfigReader.ENDPOINT_URL;
         DatasetAccessorFactory factory = new DatasetAccessorFactory();
         DatasetAccessor accessor;
         accessor = DatasetAccessorFactory.createHTTP(serviceURI);

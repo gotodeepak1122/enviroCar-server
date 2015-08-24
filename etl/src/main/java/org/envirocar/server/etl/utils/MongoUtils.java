@@ -166,8 +166,6 @@ public class MongoUtils {
         userPOJO.setAdmin((Boolean) dbObject.get("isAdmin"));
         userPOJO.setName((String) dbObject.get("_id"));
         userPOJO.setMail((String) dbObject.get("mail"));
-        System.out.println("mongo inside final func" + dbObject.get("_id"));
-        System.out.println("inside final func" + userPOJO.getName());
         return userPOJO;
     }
 
@@ -191,7 +189,6 @@ public class MongoUtils {
 
     private TrackPOJO getTrackFromDBObject(DBObject dbObject) {
 
-        // _id,DBREF user, sensor,name,description,begin , end , obddevice , length ,
         TrackPOJO storeTrack = new TrackPOJO();
         ObjectId objectId = (ObjectId) dbObject.get("_id");
         storeTrack.setIdentifier(objectId.toString());
@@ -256,6 +253,7 @@ public class MongoUtils {
         measurementPOJO.setGeometry(geometry);
         measurementPOJO.setSensor(sensor);
         measurementPOJO.setTrack(trackPOJO);
+        measurementPOJO.setUser(userPOJO);
         return measurementPOJO;
     }
 

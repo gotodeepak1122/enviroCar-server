@@ -354,7 +354,6 @@ public class RDFUtils {
 
     }
 
-
     private static void addFuelType(final Map<String, Object> p, Model m, final Resource sensor) {
         final String fuelType = (String) p.get(SensorVSOLinker.FUEL_TYPE_PROPERTY);
         if (fuelType != null) {
@@ -380,7 +379,6 @@ public class RDFUtils {
         }
     }
 
-
     private static String fragment(Resource resource, String fragment) {
         return UriBuilder.fromUri(resource.getURI())
                 .fragment(fragment)
@@ -388,13 +386,17 @@ public class RDFUtils {
                 .toASCIIString();
     }
 
+    private static void linkDCTerms(Model modelToBeLinked, Resource resource) {
+        resource.addProperty(DCTerms.rights, DCTermsLinker.ODBL_URL);
+
+    }
+
    /* public static void encodeActivities(ActivityPOJO activityPOJO ,Model activityModel){
         URI activityURI =
 
     }*/
 
-    private static void linkDCTerms(Model modelToBeLinked, Resource resource) {
-        resource.addProperty(DCTerms.rights, DCTermsLinker.ODBL_URL);
+    private void encodeActivity(Model m, ActivityPOJO activityPOJO) {
 
     }
 
