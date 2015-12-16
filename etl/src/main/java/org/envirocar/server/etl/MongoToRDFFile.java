@@ -51,7 +51,6 @@ public class MongoToRDFFile implements ETLProcess {
         etl.dataSetDump = etl.mongoCloner.cloneIntoMemory();
         RDFDumpWriter.writeIntoFile(RDFUtils.encodeTracks(etl.dataSetDump.trackPOJOList), RDFDumpNames.TRACKS_RDF_LOCATION);
         RDFDumpWriter.writeIntoFile(RDFUtils.encodeMeasurements(etl.dataSetDump.measurementPOJOList), RDFDumpNames.MEASUREMENTS_RDF_LOCATION);
-        RDFDumpWriter.writeIntoFile(RDFUtils.encodeUsers(etl.dataSetDump.userPOJOList), RDFDumpNames.USERS_RDF_LOCATION);
         RDFDumpWriter.writeIntoFile(RDFUtils.encodePhenomenons(etl.dataSetDump.phenomenonPOJOList), RDFDumpNames.PHENOMENONS_RDF_LOCATION);
         RDFDumpWriter.writeIntoFile(RDFUtils.encodeSensors(etl.dataSetDump.sensorPOJOList), RDFDumpNames.SENSORS_RDF_LOCATION);
         etl.sparqlGraphProtocolLoader.load(ConfigReader.ENDPOINT_URL, ConfigReader.DUMP_LOCATION);
